@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: feature_store_source
+    description: "This is the source for my database tables"
+    database: FEATURE_STORE_DBT_DEMO
+    schema: FS_DBT_DEMO
+    tables:
+      - name: customer_transactions_fraud
+        description: "customer transactions fraud"
+      - name: fraud_transactions
+        description: "fraudulent transactions"

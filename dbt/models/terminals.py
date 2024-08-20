@@ -6,7 +6,8 @@ zero_if_null = F.builtin("ZEROIFNULL")
 transactions_src = 'FEATURE_STORE_DBT_DEMO.FS_DBT_DEMO.CUSTOMER_TRANSACTIONS_FRAUD'
 
 def model(dbt, session):
-    df_cust_trx_fraud = session.table(transactions_src)
+    #df_cust_trx_fraud = session.table(transactions_src)
+    df_cust_trx_fraud = dbt.ref('stg_customer_transactions_fraud')
 
     # Get the Date Information for the Dataset (number of days and start_date)
     date_info = df_cust_trx_fraud.select(
