@@ -6,7 +6,8 @@ zero_if_null = F.builtin("ZEROIFNULL")
 transactions_src = 'FEATURE_STORE_DBT_DEMO.FS_DBT_DEMO.CUSTOMER_TRANSACTIONS_FRAUD'
 
 def model(dbt, session):
-    df_cust_trx_fraud = session.table(transactions_src)
+    #df_cust_trx_fraud = session.table(transactions_src)
+    df_cust_trx_fraud = dbt.ref('stg_customer_transactions_fraud')
 
     # Get the Date Information for the Dataset (number of days and start_date)
     date_info = df_cust_trx_fraud.select(
@@ -57,10 +58,10 @@ def model(dbt, session):
         F.sum(F.col("NB_FRAUD")).over(win_delay).as_("NB_FRAUD_DELAY"),
         F.sum(F.col("NO_TRX")).over(win_delay).as_("NB_TX_DELAY"),
         F.sum(F.col("NO_TRX")).over(win_1d_term).as_("NB_TX_DELAY_WINDOW_1"),
-        F.sum(F.col("NO_TRX")).over(win_1d_term).as_("NB_TX_DELAY_WINDOW_7"),
+        F.sum(F.col("NO_TRX")).over(win_7d_term).as_("NB_TX_DELAY_WINDOW_7"),
         F.sum(F.col("NO_TRX")).over(win_30d_term).as_("NB_TX_DELAY_WINDOW_30"),
         F.sum(F.col("NB_FRAUD")).over(win_1d_term).as_("NB_FRAUD_DELAY_WINDOW_1"),
-        F.sum(F.col("NB_FRAUD")).over(win_1d_term).as_("NB_FRAUD_DELAY_WINDOW_7"),
+        F.sum(F.col("NB_FRAUD")).over(win_7d_term).as_("NB_FRAUD_DELAY_WINDOW_7"),
         F.sum(F.col("NB_FRAUD")).over(win_30d_term).as_("NB_FRAUD_DELAY_WINDOW_30")
     )
 
